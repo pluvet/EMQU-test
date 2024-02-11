@@ -5,9 +5,9 @@ from source.infraestructure.database import models
 from sqlalchemy import exc
 
 @dataclass
-class UserRepository:
+class PostgresUserRepository:
 
-    async def save(self, user: User) -> str:
+    async def save(self, user: User) -> int:
         new_user = models.User(**user.model_dump())
         try:
             db.add(new_user)

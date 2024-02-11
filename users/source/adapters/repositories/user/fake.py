@@ -1,51 +1,17 @@
-from datetime import datetime
-from typing import List, Optional
-import uuid
-from source.models.book.base import BookBaseModel
+from dataclasses import dataclass
+from source.domain.user import User
+from source.infraestructure.database.postgres import db
+from source.infraestructure.database import models
+from sqlalchemy import exc
 
-class BookFakeModel(BookBaseModel):
-    """book class"""
+@dataclass
+class FakeUserRepository:
 
-    def save(self) -> None:
-        """update or create a single book"""
-        pass
-
-    @classmethod
-    def list(cls) -> List['BookFakeModel']:
-        """list all books"""
-        
-        books = [
-            {"id": "1","title":"test", "description":'testD', "tags":['tessT'], "publication_date":'1999-01-01'},
-            {"id": "1","title":"test2", "description":'testD2', "tags":['tessT2'], "publication_date":'1999-01-02'}
-        ]
-        
-        book_list = []
-
-        for book in books:
-            book = dict(book)
-            book_list.append(cls(
-                title=book['title'],
-                description=book['description'],
-                tags=book['tags'],
-                publication_date=book['publication_date'],
-                id=book['_id']
-            ))
-
-        return book_list
-
-    @classmethod
-    def find(cls, id: str) -> 'BookFakeModel':
-        """find a single book"""
-        
-        return cls(
-            title='title',
-            description='description',
-            tags=['tags'],
-            publication_date='1999-01-01',
-            id='a4f8d469-c652-41a3-9076-3b7df5bf129a'
-        )
-
-    def delete(self) -> None:
-        """delete a single book"""
-        
-        pass
+    async def save(self, user: User) -> str:
+        return 1
+    
+    async def find_by_email(self, email: str) -> User:
+        user = User()
+        user.email = "fake@mail.com"
+        user.password = "fake123"
+        return user

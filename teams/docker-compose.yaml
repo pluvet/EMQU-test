@@ -1,0 +1,44 @@
+version: '3.3'
+
+services:
+
+  team-app:
+    build: .
+    ports:
+      - 8610:80
+    command: ["poetry", "run", "uvicorn", "source.infraestructure.framework.app:app", "--host", "0.0.0.0", "--port", "80"]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - pgdb_user=postgres
+      - pgdb_password=123456
+    depends_on:
+      - pgdb
+    volumes:
+      - ./source:/app/source
+    restart: always
+
+  pgdb:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: team
+    volumes:
+     - ./postgres:/var/lib/postgresql/data
+    ports: 
+     - 5438:5432
+
+ 
+  
+
+      
+
+
+
+
+
+
+ 
+    
+
+

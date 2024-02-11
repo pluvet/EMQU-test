@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from source.services.register_user import RegisterUserService
 from source.services.login_user import LoginUserService
-from source.adapters.repositories.user.postgres import UserRepository
+from source.adapters.repositories.user.postgres import PostgresUserRepository
 
 user_router = APIRouter()
 
@@ -11,7 +11,7 @@ async def register(request: Request)-> JSONResponse:
     """this function register a new user"""
     request = await request.json()
 
-    user_repository = UserRepository()
+    user_repository = PostgresUserRepository()
     register_user_service = RegisterUserService(user_repository)
 
     user_id = await register_user_service.execute(
@@ -26,7 +26,7 @@ async def login(request: Request)-> JSONResponse:
     """this function login"""
     request = await request.json()
 
-    user_repository = UserRepository()
+    user_repository = PostgresUserRepository()
     login_user_service = LoginUserService(user_repository)
 
     token = await login_user_service.execute(
